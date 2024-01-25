@@ -4,8 +4,10 @@
     "datasource",
     "dharmik",
     "hookform",
+    "lucide",
     "nextjs",
     "Uploadthing",
-    "uuidv"
+    "uuidv",
+    "zustand"
   ]
 }
