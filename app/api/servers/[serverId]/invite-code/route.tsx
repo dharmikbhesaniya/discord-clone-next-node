@@ -2,13 +2,12 @@ import { v4 as uuidv4 } from "uuid";
 import { currentProfile } from "@/lib/current-profile";
 import { db } from "@/lib/db";
 import { NextResponse } from "next/server";
-import { MemberRole } from "@prisma/client";
 
 export async function PATCH(
   req: Request,
   { params }: { params: { serverId: string } }
 ) {
-  // try {
+  try {
     const profile = await currentProfile();
 
     if (!profile) return new NextResponse("Unauthorized", { status: 401 });
@@ -25,12 +24,9 @@ export async function PATCH(
       },
     });
 
-    console.log("server", server);
-    
-
     return NextResponse.json(server);
-  // } catch (error) {
-    // console.log("[SERVERS_ID_PATCH]", error);
-    // return new NextResponse("Internal Error", { status: 500 });
-  // }
+  } catch (error) {
+    console.log("[SERVERS_ID_PATCH]", error);
+    return new NextResponse("Internal Error", { status: 500 });
+  }
 }
