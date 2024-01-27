@@ -1,32 +1,30 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
-  DialogHeader,
-  DialogTitle,
   DialogDescription,
-  DialogTrigger,
   DialogFooter,
+  DialogHeader,
+  DialogTitle
 } from "@/components/ui/dialog";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
+  FormMessage
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { useForm } from "react-hook-form";
-import * as z from "zod";
+import { useModal } from "@/hooks/use-modal-store";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FileUpload } from "../file-upload";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { useModal } from "@/hooks/use-modal-store";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+import { FileUpload } from "../file-upload";
 
 const formSchema = z.object({
   name: z.string().min(1, {
