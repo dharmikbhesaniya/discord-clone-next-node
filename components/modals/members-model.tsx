@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/dialog";
 import { useModal } from "@/hooks/use-modal-store";
 // import * as z from "zod";
-import { ServerWithMembersWithProfile } from "@/types";
+import { ServerWithMembersWithProfiles } from "@/types";
 import { ScrollArea } from "../ui/scroll-area";
 import { UserAvatar } from "../user-avatar";
 import {
@@ -59,7 +59,7 @@ export const MembersModal = () => {
   const { isOpen, onOpen, onClose, type, data } = useModal();
   const router = useRouter();
 
-  const { server } = data as { server: ServerWithMembersWithProfile };
+  const { server } = data as { server: ServerWithMembersWithProfiles };
   const isModalOpen = isOpen && type == "members";
 
   const onKick = async (memberId: string) => {
