@@ -4,7 +4,7 @@ export type ServerWithMembersWithProfiles = Server & {
   members: Member &
     {
       role: any;
-      id: Key | null | undefined;
+      id: any | null | undefined;
       profileId: string;
       profile: Profile;
     }[];
