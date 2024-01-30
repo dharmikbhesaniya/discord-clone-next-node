@@ -6,46 +6,51 @@ import { MemberRole } from "@prisma/client";
 
 export async function PATCH(
   req: Request,
-  { params }: { params: { memberId: string } }
+  { params }: { params: { channelId: string } }
 ) {
   try {
     const profile = await currentProfile();
+    const { name, type } = await req.json();
     const { searchParams } = new URL(req.url);
-    const { role } = await req.json();
     const serverId = searchParams.get("serverId");
 
     if (!profile) return new NextResponse("Unauthorized", { status: 401 });
     if (!serverId) return new NextResponse("Serve Id Missing", { status: 400 });
-    if (!params.memberId)
-      return new NextResponse("Member Id Missing", { status: 400 });
+    if (!params.channelId)
+      return new NextResponse("Channel Id Missing", { status: 400 });
+    if (name === "general")
+      return new NextResponse("Name cannot be change 'general'", {
+        status: 400,
+      });
 
     const server = await db.server.update({
       where: {
         id: serverId,
-        profileId: profile.id,
-      },
-      data: {
         members: {
-          update: {
-            where: {
-              id: params.memberId,
-              profileId: {
-                not: profile.id,
-              },
-            },
-            data: {
-              role,
+          some: {
+            profileId: profile.id,
+            role: {
+              in: [MemberRole.ADMIN, MemberRole.MODERATOR],
             },
           },
         },
       },
-      include: {
-        members: {
-          include: {
-            profile: true,
-          },
-          orderBy: {
-            role: "asc",
+      data: {
+        channels: {
+          update: {
+            where: {
+              id: params?.channelId,
+              // name: {
+              //   not: "general",
+              // },
+              NOT: {
+                name: "general",
+              },
+            },
+            data: {
+              name,
+              type,
+            },
           },
         },
       },
@@ -53,7 +58,7 @@ export async function PATCH(
 
     return NextResponse.json(server);
   } catch (error) {
-    console.log("[MEMBERS_ID_PATCH]", error);
+    console.log("[CHANNEL_ID_PATCH]", error);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }
