@@ -61,7 +61,7 @@ model Member {
   server   Server @relation(fields: [serverId], references: [id], onDelete: Cascade)
 
   messages               Message[]
-  direcatMessage         DirecatMessage[]
+  direcatMessage         DirectMessage[]
   conversationsInitiated Conversation[]   @relation("MemberOne")
   conversationsReceived  Conversation[]   @relation("MemberTwo")
 
@@ -126,7 +126,7 @@ model Conversation {
   memberTwoId String
   memberTwo   Member @relation("MemberTwo", fields: [memberTwoId], references: [id], onDelete: Cascade)
 
-  direcatMessage DirecatMessage[]
+  direcatMessage DirectMessage[]
 
   deleted    Boolean  @default(false)
   createdAt DateTime @default(now())
@@ -137,7 +137,7 @@ model Conversation {
   @@index([memberTwoId])
 }
 
-model DirecatMessage {
+model DirectMessage {
   id      String  @id @default(uuid())
   content String  @db.Text
   fileUrl String? @db.Text
